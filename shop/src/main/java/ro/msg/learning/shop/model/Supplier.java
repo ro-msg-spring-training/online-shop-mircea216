@@ -13,6 +13,6 @@ import javax.persistence.Entity;
 @Setter
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public class Suppiler extends MainEntity<Integer> {
+public class Supplier extends MainEntity<Integer> {
     private String name;
 }

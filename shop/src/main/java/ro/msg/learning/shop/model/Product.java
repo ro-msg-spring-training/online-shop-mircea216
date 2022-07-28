@@ -22,7 +22,7 @@ public class Product extends MainEntity<Integer> {
     private Double weight;
     @ManyToOne
     @JoinColumn(name = "supplier")
-    private Suppiler supplier;
+    private Supplier supplier;
     @ManyToOne
     @JoinColumn(name = "category")
     private ProductCategory productCategory;
