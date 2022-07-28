@@ -2,12 +2,12 @@ package ro.msg.learning.shop.model;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
+@Table(name = "order_product")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -19,7 +19,7 @@ public class Order extends MainEntity<Integer> {
     @JoinColumn(name = "product")
     private Product product;
     @ManyToOne
-    @JoinColumn(name = "location")
+    @JoinColumn(name = "shipped_from")
     private Location location;
     @ManyToOne
     @JoinColumn(name = "customer")
@@ -29,4 +29,7 @@ public class Order extends MainEntity<Integer> {
     private String city;
     private String county;
     private String streetAddress;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderDetail> orderDetails;
 }

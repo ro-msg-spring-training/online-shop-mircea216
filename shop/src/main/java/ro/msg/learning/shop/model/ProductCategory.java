@@ -2,7 +2,10 @@ package ro.msg.learning.shop.model;
 
 import lombok.*;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import java.util.List;
 
 
 @Entity
@@ -15,4 +18,7 @@ import javax.persistence.Entity;
 public class ProductCategory extends MainEntity<Integer> {
     private String name;
     private String description;
+
+    @OneToMany(mappedBy = "productCategory", cascade = CascadeType.ALL)
+    private List<Product> products;
 }

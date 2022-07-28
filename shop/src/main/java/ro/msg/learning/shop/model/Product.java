@@ -3,12 +3,12 @@ package ro.msg.learning.shop.model;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.math.BigInteger;
+import java.util.List;
 
 @Entity
+@Table(name = "product")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -27,4 +27,9 @@ public class Product extends MainEntity<Integer> {
     @JoinColumn(name = "category")
     private ProductCategory productCategory;
     private String imageURL;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<Order> orders;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<Stock> stocks;
 }
