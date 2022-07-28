@@ -45,10 +45,11 @@ CREATE TABLE IF NOT EXISTS location
 
 CREATE TABLE IF NOT EXISTS stock
 (
+    id       INT PRIMARY KEY AUTO_INCREMENT,
     product  INT NOT NULL REFERENCES product (id),
     location INT NOT NULL REFERENCES location (id),
     quantity INT NOT NULL CHECK (quantity >= 0),
-    CONSTRAINT PK_stock UNIQUE (product, location)
+    CONSTRAINT UC_stock UNIQUE (product, location)
 );
 
 CREATE TABLE IF NOT EXISTS revenue
@@ -74,8 +75,9 @@ CREATE TABLE IF NOT EXISTS order_product
 
 CREATE TABLE IF NOT EXISTS order_detail
 (
+    id            INT PRIMARY KEY AUTO_INCREMENT,
     order_product INT NOT NULL REFERENCES order_product (id),
     product       INT NOT NULL REFERENCES product (id),
     quantity      INT NOT NULL CHECK (quantity > 0),
-    CONSTRAINT PK_order_detail UNIQUE (order_product, product)
+    CONSTRAINT UC_order_detail UNIQUE (order_product, product)
 );
