@@ -4,23 +4,23 @@ import lombok.AllArgsConstructor;
 import lombok.*;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "supplier")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
-@ToString
+
 public class Supplier extends MainEntity<Integer> {
     private String name;
 
-    @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Product> products;
+
+    public Supplier(String name) {
+        this.name = name;
+    }
 }

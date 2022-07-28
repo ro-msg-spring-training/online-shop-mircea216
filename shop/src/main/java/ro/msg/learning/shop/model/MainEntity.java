@@ -10,7 +10,7 @@ import java.io.Serializable;
 @MappedSuperclass
 @Getter
 @Setter
-@ToString
+
 @RequiredArgsConstructor
 @EqualsAndHashCode
 public class MainEntity<ID extends Serializable> implements Serializable {

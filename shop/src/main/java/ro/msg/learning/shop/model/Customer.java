@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import java.util.List;
 
@@ -13,7 +14,6 @@ import java.util.List;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
-@ToString
 public class Customer extends MainEntity<Integer> {
     private String firstName;
     private String lastName;
@@ -21,6 +21,6 @@ public class Customer extends MainEntity<Integer> {
     private String password;
     private String emailAddress;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Order> orders;
 }

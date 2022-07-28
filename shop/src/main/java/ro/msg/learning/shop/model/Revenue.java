@@ -7,12 +7,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "revenue")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
 @EqualsAndHashCode(callSuper = true)
 
 public class Revenue extends MainEntity<Integer> {

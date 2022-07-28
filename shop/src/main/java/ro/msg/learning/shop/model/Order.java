@@ -7,12 +7,10 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Table(name = "order_product")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
 @EqualsAndHashCode(callSuper = true)
 public class Order extends MainEntity<Integer> {
     @ManyToOne
@@ -30,6 +28,6 @@ public class Order extends MainEntity<Integer> {
     private String county;
     private String streetAddress;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<OrderDetail> orderDetails;
 }

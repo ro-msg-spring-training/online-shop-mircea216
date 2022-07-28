@@ -9,12 +9,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "stock")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
 @EqualsAndHashCode(callSuper = true)
 public class Stock extends MainEntity<Integer> {
     @ManyToOne

@@ -8,12 +8,12 @@ import java.math.BigInteger;
 import java.util.List;
 
 @Entity
-@Table(name = "product")
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
+
 @EqualsAndHashCode(callSuper = true)
 public class Product extends MainEntity<Integer> {
     private String name;
@@ -26,10 +26,21 @@ public class Product extends MainEntity<Integer> {
     @ManyToOne
     @JoinColumn(name = "category")
     private ProductCategory productCategory;
-    private String imageURL;
+    private String imageUrl;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Order> orders;
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Stock> stocks;
+
+    public Product(String name, String description, BigInteger price, Double weight,
+                   Supplier supplier, ProductCategory productCategory, String imageUrl) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.weight = weight;
+        this.supplier = supplier;
+        this.productCategory = productCategory;
+        this.imageUrl = imageUrl;
+    }
 }

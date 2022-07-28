@@ -8,12 +8,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "order_detail")
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
+
 @EqualsAndHashCode(callSuper = true)
 public class OrderDetail extends MainEntity<Integer> {
     @ManyToOne

@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import java.util.List;
 
@@ -14,11 +15,16 @@ import java.util.List;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
-@ToString
+
 public class ProductCategory extends MainEntity<Integer> {
     private String name;
     private String description;
 
-    @OneToMany(mappedBy = "productCategory", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "productCategory", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Product> products;
+
+    public ProductCategory(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
 }
