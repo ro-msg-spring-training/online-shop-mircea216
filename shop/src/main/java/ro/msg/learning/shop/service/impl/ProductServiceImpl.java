@@ -1,8 +1,6 @@
 package ro.msg.learning.shop.service.impl;
 
 import org.springframework.stereotype.Service;
-import ro.msg.learning.shop.dto.ProductDto;
-import ro.msg.learning.shop.dto.ProductToSaveDto;
 import ro.msg.learning.shop.model.Product;
 import ro.msg.learning.shop.model.ProductCategory;
 import ro.msg.learning.shop.model.Supplier;
@@ -13,10 +11,9 @@ import ro.msg.learning.shop.service.ProductService;
 import ro.msg.learning.shop.service.exception.ProductCategoryException;
 import ro.msg.learning.shop.service.exception.ProductException;
 import ro.msg.learning.shop.service.exception.SupplierException;
-import ro.msg.learning.shop.utils.mapper.ProductMapper;
 
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -36,27 +33,21 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductDto> findAllProducts() {
-        return productRepository.findAll()
-                .stream()
-                .map(ProductMapper::ProductToDto)
-                .collect(Collectors.toList());
+    public List<Product> findAllProducts() {
+        return productRepository.findAll();
     }
 
     @Override
-    public ProductDto findById(Integer id) throws ProductException {
-        Product product = productRepository.findById(id)
+    public Product findById(Integer id) throws ProductException {
+        return productRepository.findById(id)
                 .orElseThrow(() -> new ProductException(PRODUCT_EXCEPTION));
-        return ProductMapper.ProductToDto(product);
     }
 
     @Override
-    public Product createProduct(ProductToSaveDto productDto) {
-        existsProductCategory(productDto);
-        existsSupplier(productDto);
-        ProductCategory productCategory = productCategoryRepository.getReferenceById(productDto.getProductCategoryId());
-        Supplier supplier = supplierRepository.getReferenceById(productDto.getSupplierId());
-        return productRepository.save(ProductMapper.DtoToSaveToProduct(productDto, productCategory, supplier));
+    public Product createProduct(Product product, Integer productId, Integer supplierId) {
+        existsProductCategory(productId);
+        existsSupplier(supplierId);
+        return productRepository.save(product);
     }
 
     @Override
@@ -67,24 +58,30 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product updateProduct(ProductToSaveDto productDto, Integer id) {
-        if (!id.equals(productDto.getId()))
+    public Product updateProduct(Product product, Integer id, Integer productId, Integer supplierId) {
+        if (!id.equals(product.getId()))
             throw new ProductException(MISMATCH);
-        existsProductCategory(productDto);
-        existsSupplier(productDto);
-        ProductCategory productCategory = productCategoryRepository.getReferenceById(productDto.getProductCategoryId());
-        Supplier supplier = supplierRepository.getReferenceById(productDto.getSupplierId());
-        return productRepository.save(ProductMapper.DtoToSaveToProduct(productDto, productCategory, supplier));
+        existsProductCategory(productId);
+        existsSupplier(supplierId);
+        return productRepository.save(product);
     }
 
-    private void existsSupplier(ProductToSaveDto productDto) {
-        if (!supplierRepository.existsById(productDto.getSupplierId())) {
+    public Supplier getSupplierById(Integer supplierId) {
+        return supplierRepository.getReferenceById(supplierId);
+    }
+
+    public ProductCategory getProductCategoryById(Integer productId) {
+        return productCategoryRepository.getReferenceById(productId);
+    }
+
+    private void existsSupplier(Integer supplierId) {
+        if (!supplierRepository.existsById(supplierId)) {
             throw new SupplierException(SUPPLIER_EXCEPTION);
         }
     }
 
-    private void existsProductCategory(ProductToSaveDto productDto) {
-        if (!productCategoryRepository.existsById(productDto.getProductCategoryId())) {
+    private void existsProductCategory(Integer productId) {
+        if (!productCategoryRepository.existsById(productId)) {
             throw new ProductCategoryException(CATEGORY_EXCEPTION);
         }
     }
