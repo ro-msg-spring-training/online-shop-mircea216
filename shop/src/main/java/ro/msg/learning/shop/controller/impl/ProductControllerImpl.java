@@ -7,7 +7,9 @@ import ro.msg.learning.shop.controller.ProductController;
 import ro.msg.learning.shop.dto.ProductDto;
 import ro.msg.learning.shop.model.Product;
 import ro.msg.learning.shop.service.ProductService;
+import ro.msg.learning.shop.service.exception.ProductCategoryException;
 import ro.msg.learning.shop.service.exception.ProductException;
+import ro.msg.learning.shop.service.exception.SupplierException;
 
 import java.util.List;
 
@@ -34,7 +36,11 @@ public class ProductControllerImpl implements ProductController {
 
     @PostMapping
     public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto productDto) {
-        productService.createProduct(productDto);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        try {
+            productService.createProduct(productDto);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (ProductCategoryException | SupplierException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }
