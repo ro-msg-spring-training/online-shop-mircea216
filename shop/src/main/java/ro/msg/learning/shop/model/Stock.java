@@ -21,7 +21,7 @@ public class Stock extends MainEntity<Integer> {
 
     @ManyToOne
     @JoinColumn(name = "product")
-    private Product product;
+    private Product productStock;
 
     private Integer quantity;
 }

@@ -16,4 +16,7 @@ public interface ProductController {
     ProductDto findById(Integer id) throws ProductException;
 
     ResponseEntity<String> createProduct(ProductToSaveDto productDto);
+
+    ResponseEntity<String> deleteProduct(Integer id);
+
 }

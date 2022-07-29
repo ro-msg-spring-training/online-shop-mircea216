@@ -28,9 +28,9 @@ public class Product extends MainEntity<Integer> {
     private ProductCategory productCategory;
     private String imageUrl;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "productOrder", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Order> orders;
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "productStock", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Stock> stocks;
 
     public Product(String name, String description, BigInteger price, Double weight,
