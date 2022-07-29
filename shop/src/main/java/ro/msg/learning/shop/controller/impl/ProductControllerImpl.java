@@ -1,11 +1,11 @@
 package ro.msg.learning.shop.controller.impl;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import ro.msg.learning.shop.controller.ProductController;
 import ro.msg.learning.shop.dto.ProductDto;
+import ro.msg.learning.shop.model.Product;
 import ro.msg.learning.shop.service.ProductService;
 import ro.msg.learning.shop.service.exception.ProductException;
 
@@ -30,5 +30,11 @@ public class ProductControllerImpl implements ProductController {
     @GetMapping("/{id}")
     public ProductDto findById(@PathVariable("id") Integer id) throws ProductException {
         return productService.findById(id);
+    }
+
+    @PostMapping
+    public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto productDto) {
+        productService.createProduct(productDto);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }

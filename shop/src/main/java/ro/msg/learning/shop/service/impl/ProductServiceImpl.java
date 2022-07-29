@@ -34,4 +34,10 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new ProductException(EXCEPTION_MESSAGE));
         return ProductMapper.ProductToDto(product);
     }
+
+    @Override
+    public Product createProduct(ProductDto productDto) {
+        System.out.println(ProductMapper.DtoToProduct(productDto).getProductCategory().getName());
+        return productRepository.save(ProductMapper.DtoToProduct(productDto));
+    }
 }

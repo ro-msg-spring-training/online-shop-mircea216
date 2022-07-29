@@ -20,8 +20,9 @@ public class ProductMapper {
     public static Product DtoToProduct(ProductDto productDto) {
         if (productDto == null)
             return null;
-        ProductCategory productCategory = new ProductCategory(productDto.getName(), productDto.getDescription());
-        productCategory.setId(productCategory.getId());
+        ProductCategory productCategory = new ProductCategory(productDto.getProductCategoryName(),
+                productDto.getProductCategoryDescription());
+        productCategory.setId(productDto.getProductCategoryId());
         Supplier supplier = new Supplier(productDto.getSupplierName());
         supplier.setId(productDto.getSupplierId());
         Product product = new Product(productDto.getName(), productDto.getDescription(), productDto.getPrice(),
