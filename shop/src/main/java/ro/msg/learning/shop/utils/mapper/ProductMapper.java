@@ -6,8 +6,6 @@ import ro.msg.learning.shop.model.Product;
 import ro.msg.learning.shop.model.ProductCategory;
 import ro.msg.learning.shop.model.Supplier;
 
-import java.math.BigInteger;
-
 public class ProductMapper {
     public static ProductDto ProductToDto(Product product) {
         if (product == null)

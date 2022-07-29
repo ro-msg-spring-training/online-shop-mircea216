@@ -16,8 +16,9 @@ import java.util.List;
 @RequestMapping("/products")
 public class ProductControllerImpl implements ProductController {
     private static final String ID = "id";
-    private static final String DELETE_SUCCESS = "Product successfully deleted";
     private static final String CREATE_SUCCESS = "Product successfully created";
+    private static final String DELETE_SUCCESS = "Product successfully deleted";
+    private static final String UPDATE_SUCCESS = "Product successfully updated";
 
     private final ProductService productService;
 
@@ -47,5 +48,13 @@ public class ProductControllerImpl implements ProductController {
     public ResponseEntity<String> deleteProduct(@PathVariable(ID) Integer id) {
         productService.deleteProduct(id);
         return new ResponseEntity<>(DELETE_SUCCESS, HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    @Override
+    public ResponseEntity<String> updateProduct(@RequestBody ProductToSaveDto productDto,
+                                                @PathVariable(ID) Integer id) {
+        productService.updateProduct(productDto, id);
+        return new ResponseEntity<>(UPDATE_SUCCESS, HttpStatus.OK);
     }
 }

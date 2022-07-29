@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import ro.msg.learning.shop.dto.ProductDto;
 import ro.msg.learning.shop.dto.ProductToSaveDto;
+import ro.msg.learning.shop.model.Product;
 import ro.msg.learning.shop.service.exception.ProductException;
 
 import java.util.List;
@@ -19,4 +20,5 @@ public interface ProductController {
 
     ResponseEntity<String> deleteProduct(Integer id);
 
+    ResponseEntity<String> updateProduct(ProductToSaveDto productDto, Integer id);
 }

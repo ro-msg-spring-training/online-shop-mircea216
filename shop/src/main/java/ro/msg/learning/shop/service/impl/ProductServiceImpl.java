@@ -15,9 +15,7 @@ import ro.msg.learning.shop.service.exception.ProductException;
 import ro.msg.learning.shop.service.exception.SupplierException;
 import ro.msg.learning.shop.utils.mapper.ProductMapper;
 
-import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,6 +23,7 @@ public class ProductServiceImpl implements ProductService {
     private static final String PRODUCT_EXCEPTION = "No product with this id";
     private static final String CATEGORY_EXCEPTION = "No category with this ID";
     private static final String SUPPLIER_EXCEPTION = "No supplier with this ID";
+    private static final String MISMATCH = "IDs mismatch";
     private final ProductRepository productRepository;
     private final ProductCategoryRepository productCategoryRepository;
     private final SupplierRepository supplierRepository;
@@ -53,22 +52,40 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product createProduct(ProductToSaveDto productDto) {
-        if (!productCategoryRepository.existsById(productDto.getProductCategoryId())) {
-            throw new ProductCategoryException(CATEGORY_EXCEPTION);
-        }
-        if (!supplierRepository.existsById(productDto.getSupplierId())) {
-            throw new SupplierException(SUPPLIER_EXCEPTION);
-        }
+        existsProductCategory(productDto);
+        existsSupplier(productDto);
         ProductCategory productCategory = productCategoryRepository.getReferenceById(productDto.getProductCategoryId());
         Supplier supplier = supplierRepository.getReferenceById(productDto.getSupplierId());
         return productRepository.save(ProductMapper.DtoToSaveToProduct(productDto, productCategory, supplier));
     }
 
-    @Transactional
     @Override
     public void deleteProduct(Integer id) {
         if (!productRepository.existsById(id))
             throw new ProductException(PRODUCT_EXCEPTION);
         productRepository.deleteById(id);
+    }
+
+    @Override
+    public Product updateProduct(ProductToSaveDto productDto, Integer id) {
+        if (!id.equals(productDto.getId()))
+            throw new ProductException(MISMATCH);
+        existsProductCategory(productDto);
+        existsSupplier(productDto);
+        ProductCategory productCategory = productCategoryRepository.getReferenceById(productDto.getProductCategoryId());
+        Supplier supplier = supplierRepository.getReferenceById(productDto.getSupplierId());
+        return productRepository.save(ProductMapper.DtoToSaveToProduct(productDto, productCategory, supplier));
+    }
+
+    private void existsSupplier(ProductToSaveDto productDto) {
+        if (!supplierRepository.existsById(productDto.getSupplierId())) {
+            throw new SupplierException(SUPPLIER_EXCEPTION);
+        }
+    }
+
+    private void existsProductCategory(ProductToSaveDto productDto) {
+        if (!productCategoryRepository.existsById(productDto.getProductCategoryId())) {
+            throw new ProductCategoryException(CATEGORY_EXCEPTION);
+        }
     }
 }
