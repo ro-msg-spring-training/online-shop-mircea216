@@ -2,6 +2,7 @@ package ro.msg.learning.shop.service.impl;
 
 import org.springframework.stereotype.Service;
 import ro.msg.learning.shop.dto.ProductDto;
+import ro.msg.learning.shop.dto.ProductToSaveDto;
 import ro.msg.learning.shop.model.Product;
 import ro.msg.learning.shop.model.ProductCategory;
 import ro.msg.learning.shop.model.Supplier;
@@ -15,6 +16,7 @@ import ro.msg.learning.shop.service.exception.SupplierException;
 import ro.msg.learning.shop.utils.mapper.ProductMapper;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -49,13 +51,20 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product createProduct(ProductDto productDto) throws ProductCategoryException, SupplierException {
-        ProductCategory productCategory = productCategoryRepository.
-                findById(productDto.getProductCategoryId()).orElseThrow(() -> new
-                        ProductCategoryException(CATEGORY_EXCEPTION));
-        Supplier supplier = supplierRepository.
-                findById(productDto.getSupplierId()).orElseThrow(() ->
-                        new SupplierException(SUPPLIER_CATEGORY));
-        return productRepository.save(ProductMapper.DtoToProduct(productDto));
+    public Product createProduct(ProductToSaveDto productDto) {
+        if (!productCategoryRepository.existsById(productDto.getProductCategoryId())) {
+            throw new ProductCategoryException(CATEGORY_EXCEPTION);
+        }
+        if (!supplierRepository.existsById(productDto.getSupplierId())) {
+            throw new SupplierException(CATEGORY_EXCEPTION);
+        }
+        ProductCategory productCategory = productCategoryRepository.getReferenceById(productDto.getProductCategoryId());
+        Supplier supplier = supplierRepository.getReferenceById(productDto.getSupplierId());
+        return productRepository.save(ProductMapper.DtoToSaveToProduct(productDto, productCategory, supplier));
+    }
+
+    @Override
+    public void deleteProduct(Integer id) {
+
     }
 }

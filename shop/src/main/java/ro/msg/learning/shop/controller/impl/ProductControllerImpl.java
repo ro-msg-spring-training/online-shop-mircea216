@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.msg.learning.shop.controller.ProductController;
 import ro.msg.learning.shop.dto.ProductDto;
+import ro.msg.learning.shop.dto.ProductToSaveDto;
 import ro.msg.learning.shop.model.Product;
 import ro.msg.learning.shop.service.ProductService;
 import ro.msg.learning.shop.service.exception.ProductCategoryException;
@@ -35,12 +36,8 @@ public class ProductControllerImpl implements ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto productDto) {
-        try {
-            productService.createProduct(productDto);
-            return new ResponseEntity<>(HttpStatus.CREATED);
-        } catch (ProductCategoryException | SupplierException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<String> createProduct(@RequestBody ProductToSaveDto productDto) {
+        productService.createProduct(productDto);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }

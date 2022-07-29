@@ -1,6 +1,7 @@
 package ro.msg.learning.shop.service;
 
 import ro.msg.learning.shop.dto.ProductDto;
+import ro.msg.learning.shop.dto.ProductToSaveDto;
 import ro.msg.learning.shop.model.Product;
 import ro.msg.learning.shop.service.exception.ProductCategoryException;
 import ro.msg.learning.shop.service.exception.ProductException;
@@ -15,5 +16,7 @@ public interface ProductService {
 
     ProductDto findById(Integer id) throws ProductException;
 
-    Product createProduct(ProductDto productDto) throws ProductCategoryException, SupplierException;
+    Product createProduct(ProductToSaveDto productDto) ;
+
+    void deleteProduct(Integer id);
 }
