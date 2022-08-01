@@ -15,9 +15,6 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public class Order extends MainEntity<Integer> {
     @ManyToOne
-    @JoinColumn(name = "product")
-    private Product productOrder;
-    @ManyToOne
     @JoinColumn(name = "shipped_from")
     private Location location;
     @ManyToOne
@@ -31,4 +28,15 @@ public class Order extends MainEntity<Integer> {
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<OrderDetail> orderDetails;
+
+    public Order(Location location, Customer customer, LocalDate createdAt, String country, String city,
+                 String county, String streetAddress) {
+        this.location = location;
+        this.customer = customer;
+        this.createdAt = createdAt;
+        this.country = country;
+        this.city = city;
+        this.county = county;
+        this.streetAddress = streetAddress;
+    }
 }

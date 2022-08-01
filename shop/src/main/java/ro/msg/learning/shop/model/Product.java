@@ -29,7 +29,7 @@ public class Product extends MainEntity<Integer> {
     private String imageUrl;
 
     @OneToMany(mappedBy = "productOrder", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Order> orders;
+    private List<OrderDetail> orders;
     @OneToMany(mappedBy = "productStock", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Stock> stocks;
 

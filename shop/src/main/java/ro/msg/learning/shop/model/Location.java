@@ -24,4 +24,12 @@ public class Location extends MainEntity<Integer> {
     private List<Stock> stocks;
     @OneToMany(mappedBy = "location", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Order> orders;
+
+    public Location(String name, String country, String city, String county, String streetAddress) {
+        this.name = name;
+        this.country = country;
+        this.city = city;
+        this.county = county;
+        this.streetAddress = streetAddress;
+    }
 }

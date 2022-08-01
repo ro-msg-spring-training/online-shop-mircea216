@@ -8,7 +8,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-
+@Table(name = "order_detail")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -21,6 +21,6 @@ public class OrderDetail extends MainEntity<Integer> {
     private Order order;
     @ManyToOne
     @JoinColumn(name = "product")
-    private Product product;
+    private Product productOrder;
     private Integer quantity;
 }

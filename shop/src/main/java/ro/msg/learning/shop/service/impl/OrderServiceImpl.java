@@ -1,0 +1,66 @@
+package ro.msg.learning.shop.service.impl;
+
+import org.springframework.stereotype.Service;
+import ro.msg.learning.shop.dto.OrderDto;
+import ro.msg.learning.shop.dto.StockDto;
+import ro.msg.learning.shop.model.Order;
+import ro.msg.learning.shop.model.OrderDetail;
+import ro.msg.learning.shop.model.Stock;
+import ro.msg.learning.shop.repository.OrderDetailRepository;
+import ro.msg.learning.shop.repository.OrderRepository;
+import ro.msg.learning.shop.repository.ProductRepository;
+import ro.msg.learning.shop.repository.StockRepository;
+import ro.msg.learning.shop.service.OrderService;
+import ro.msg.learning.shop.service.strategy.OrderStrategy;
+import ro.msg.learning.shop.utils.mapper.OrderMapper;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+public class OrderServiceImpl implements OrderService {
+    private final OrderRepository orderRepository;
+    private final StockRepository stockRepository;
+    private final OrderDetailRepository orderDetailRepository;
+    private final ProductRepository productRepository;
+    private final OrderStrategy orderStrategy;
+
+    public OrderServiceImpl(OrderRepository orderRepository, StockRepository stockRepository,
+                            OrderDetailRepository orderDetailRepository, ProductRepository productRepository,
+                            OrderStrategy orderStrategy) {
+        this.orderRepository = orderRepository;
+        this.stockRepository = stockRepository;
+        this.orderDetailRepository = orderDetailRepository;
+        this.productRepository = productRepository;
+        this.orderStrategy = orderStrategy;
+    }
+
+    //TODO remove dto-related logic from service
+    @Override
+    public Order createOrder(OrderDto orderDto) {
+        Order order = OrderMapper.DtoToOrder(orderDto);
+        List<OrderDetail> orderDetails = new ArrayList<>();
+        orderDto.getOrderedProducts().forEach(stockDto -> configureOrderDetails(order, orderDetails, stockDto));
+        List<Stock> stocks = orderStrategy.getStocksByOrders(orderDetails);
+        shipProductsFromStocks(orderDetails, stocks);
+        orderRepository.save(order);
+        orderDetails.forEach(orderDetailRepository::save);
+        return order;
+    }
+
+    private void shipProductsFromStocks(List<OrderDetail> orderDetails, List<Stock> stocks) {
+        for (Stock stock : stocks) {
+            for (OrderDetail orderDetail : orderDetails)
+                if (stock.getProductStock().getId().equals(orderDetail.getProductOrder().getId())) {
+                    stock.setQuantity(stock.getQuantity() - orderDetail.getQuantity());
+                    stockRepository.save(stock);
+                }
+        }
+    }
+
+    private void configureOrderDetails(Order order, List<OrderDetail> orderDetails, StockDto stockDto) {
+        orderDetails.add(new OrderDetail(order,
+                productRepository.getReferenceById(stockDto.getProductId()),
+                stockDto.getQuantity()));
+    }
+}
