@@ -7,6 +7,4 @@ VALUES ('Alex', 'Doe', 'alexdoe', 'password', 'adoe@gmail.com');
 INSERT INTO stock(product, location, quantity)
 VALUES (1, 1, 15),
        (1, 2, 20),
-       (1, 3, 10),
-       (16, 1, 10),
-       (16, 2, 12);
+       (1, 3, 10);

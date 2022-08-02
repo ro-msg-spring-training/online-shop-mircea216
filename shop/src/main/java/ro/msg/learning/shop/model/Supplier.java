@@ -17,10 +17,11 @@ import java.util.List;
 public class Supplier extends MainEntity<Integer> {
     private String name;
 
-    @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "supplier")
     private List<Product> products;
 
     public Supplier(String name) {
+
         this.name = name;
     }
 }

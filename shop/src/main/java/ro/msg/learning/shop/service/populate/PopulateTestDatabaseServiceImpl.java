@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import ro.msg.learning.shop.model.*;
 import ro.msg.learning.shop.repository.*;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.math.BigInteger;
 
 @Service
@@ -17,24 +16,42 @@ public class PopulateTestDatabaseServiceImpl implements PopulateTestDatabaseServ
     private final StockRepository stockRepository;
     private final CustomerRepository customerRepository;
     private final LocationRepository locationRepository;
+    private final OrderRepository orderRepository;
+    private final OrderDetailRepository orderDetailRepository;
 
     @Override
     public void populateDatabaseWithMockData() {
-        Supplier supplier = supplierRepository.save(new Supplier("Apple"));
+        Supplier supplier = new Supplier("Apple");
+        supplier.setId(1);
+        supplierRepository.save(supplier);
+        Supplier supplier1 = supplierRepository.getReferenceById(1);
         ProductCategory productCategory = productCategoryRepository.save(new ProductCategory("phone",
                 "great"));
-        Product firstProduct = productRepository.save(new Product("Iphone12", "cool",
-                BigInteger.valueOf(6000), 200.0, supplier, productCategory, "http/"));
-        Product secondProduct = productRepository.save(new Product("Iphone13", "cooler",
-                BigInteger.valueOf(6500), 300.0, supplier, productCategory, "http//"));
-        Location location1 = locationRepository.save(new Location("Emag", "Ro", "Cj", "Cj",
-                "centralStreet"));
-        Location location2 = locationRepository.save(new Location("Altex", "Ro", "Tm", "Tm",
-                "central"));
-        Location location3 = locationRepository.save(new Location("Flanco", "Ro", "Or", "Bh",
-                "central"));
-        customerRepository.save(new Customer("Alex", "Doe",
-                "adoe", "pass", "adoe@gmail.com"));
+        productCategory.setId(1);
+        Product firstProduct = new Product("Iphone12", "cool",
+                BigInteger.valueOf(6000), 200.0, supplier1, productCategory, "http/");
+        firstProduct.setId(1);
+        productRepository.save(firstProduct);
+        Product secondProduct = new Product("Iphone13", "cooler",
+                BigInteger.valueOf(6500), 300.0, supplier1, productCategory, "http//");
+        secondProduct.setId(2);
+        productRepository.save(secondProduct);
+        Location location1 = new Location("Emag", "Ro", "Cj", "Cj",
+                "centralStreet");
+        location1.setId(1);
+        locationRepository.save(location1);
+        Location location2 = new Location("Altex", "Ro", "Tm", "Tm",
+                "central");
+        location2.setId(2);
+        locationRepository.save(location2);
+        Location location3 = new Location("Flanco", "Ro", "Or", "Bh",
+                "central");
+        location3.setId(3);
+        locationRepository.save(location3);
+        Customer customer = new Customer("Alex", "Doe",
+                "adoe", "pass", "adoe@gmail.com");
+        customer.setId(1);
+        customerRepository.save(customer);
         stockRepository.save(new Stock(location1, firstProduct, 15));
         stockRepository.save(new Stock(location2, firstProduct, 20));
         stockRepository.save(new Stock(location3, firstProduct, 10));
@@ -44,10 +61,12 @@ public class PopulateTestDatabaseServiceImpl implements PopulateTestDatabaseServ
 
     @Override
     public void depopulateDatabase() {
-        customerRepository.deleteAll();
         stockRepository.deleteAll();
-        locationRepository.deleteAll();
+        orderDetailRepository.deleteAll();
+        orderRepository.deleteAll();
         productRepository.deleteAll();
+        customerRepository.deleteAll();
+        locationRepository.deleteAll();
         productCategoryRepository.deleteAll();
         supplierRepository.deleteAll();
     }

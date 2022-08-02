@@ -26,7 +26,7 @@ public class Order extends MainEntity<Integer> {
     private String county;
     private String streetAddress;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "order")
     private List<OrderDetail> orderDetails;
 
     public Order(Location location, Customer customer, LocalDate createdAt, String country, String city,

@@ -2,9 +2,7 @@ package ro.msg.learning.shop.model;
 
 import lombok.*;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import java.util.List;
 
@@ -21,7 +19,7 @@ public class Customer extends MainEntity<Integer> {
     private String password;
     private String emailAddress;
 
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "customer")
     private List<Order> orders;
 
     public Customer(String firstName, String lastName, String username, String password,

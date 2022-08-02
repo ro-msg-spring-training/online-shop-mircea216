@@ -13,8 +13,8 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-
 @EqualsAndHashCode(callSuper = true)
+@Table(name = "product")
 public class Product extends MainEntity<Integer> {
     private String name;
     private String description;
@@ -28,9 +28,9 @@ public class Product extends MainEntity<Integer> {
     private ProductCategory productCategory;
     private String imageUrl;
 
-    @OneToMany(mappedBy = "productOrder", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "productOrder")
     private List<OrderDetail> orders;
-    @OneToMany(mappedBy = "productStock", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "productStock")
     private List<Stock> stocks;
 
     public Product(String name, String description, BigInteger price, Double weight,

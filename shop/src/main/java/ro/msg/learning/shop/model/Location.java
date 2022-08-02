@@ -18,11 +18,11 @@ public class Location extends MainEntity<Integer> {
     private String county;
     private String streetAddress;
 
-    @OneToMany(mappedBy = "location", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "location")
     private List<Revenue> revenues;
-    @OneToMany(mappedBy = "location", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "location")
     private List<Stock> stocks;
-    @OneToMany(mappedBy = "location", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "location")
     private List<Order> orders;
 
     public Location(String name, String country, String city, String county, String streetAddress) {

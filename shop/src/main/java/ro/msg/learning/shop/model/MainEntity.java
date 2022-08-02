@@ -12,6 +12,7 @@ import java.io.Serializable;
 @Setter
 
 @RequiredArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode
 public class MainEntity<ID extends Serializable> implements Serializable {
     @Id
