@@ -24,6 +24,15 @@ public class Customer extends MainEntity<Integer> {
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Order> orders;
 
+    public Customer(String firstName, String lastName, String username, String password,
+                    String emailAddress) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.password = password;
+        this.emailAddress = emailAddress;
+    }
+
     public Customer(String firstName, String lastName, String username, String emailAddress) {
         this.firstName = firstName;
         this.lastName = lastName;
