@@ -13,6 +13,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.util.NestedServletException;
 import ro.msg.learning.shop.dto.CustomerDto;
 import ro.msg.learning.shop.dto.OrderDto;
 import ro.msg.learning.shop.dto.StockDto;
@@ -41,6 +42,7 @@ public class MostAbundantStrategyIntegratedTest {
     private CustomerRepository customerRepository;
     private OrderDto orderDto;
     private Customer customer;
+    private OrderDto orderDtoFailure;
 
     @Before
     public void setUpTest() throws Exception {
@@ -54,6 +56,11 @@ public class MostAbundantStrategyIntegratedTest {
         orderedProducts.add(stockDto);
         orderDto = new OrderDto(LocalDate.now(), 1, "emag", "ro", "cj",
                 "cj", "central", customerDto, orderedProducts);
+        List<StockDto> orderedProductsFailure = new ArrayList<>();
+        StockDto stockDtoFailure = new StockDto(2, 300);
+        orderedProductsFailure.add(stockDtoFailure);
+        orderDtoFailure = new OrderDto(LocalDate.now(), 1, "emag", "ro", "cj",
+                "cj", "central", customerDto, orderedProductsFailure);
     }
 
     @After
@@ -68,6 +75,14 @@ public class MostAbundantStrategyIntegratedTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is2xxSuccessful());
+    }
+
+    @Test
+    public void testCreateOrderFailure() throws NestedServletException, Exception {
+        mockMvc.perform(post("/orders").content(jsonStringify(orderDtoFailure))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().is4xxClientError());
     }
 
     public static String jsonStringify(final Object object) {

@@ -22,31 +22,25 @@ public class PopulateTestDatabaseServiceImpl implements PopulateTestDatabaseServ
     @Override
     public void populateDatabaseWithMockData() {
         Supplier supplier = new Supplier("Apple");
-        supplier.setId(1);
         supplierRepository.save(supplier);
-        Supplier supplier1 = supplierRepository.getReferenceById(1);
+        Supplier supplier1 = new Supplier("Supplier");
+        supplierRepository.save(supplier1);
         ProductCategory productCategory = productCategoryRepository.save(new ProductCategory("phone",
                 "great"));
-        productCategory.setId(1);
         Product firstProduct = new Product("Iphone12", "cool",
-                BigInteger.valueOf(6000), 200.0, supplier1, productCategory, "http/");
-        firstProduct.setId(1);
+                BigInteger.valueOf(6000), 200.0, supplier, productCategory, "http/");
         productRepository.save(firstProduct);
         Product secondProduct = new Product("Iphone13", "cooler",
                 BigInteger.valueOf(6500), 300.0, supplier1, productCategory, "http//");
-        secondProduct.setId(2);
         productRepository.save(secondProduct);
         Location location1 = new Location("Emag", "Ro", "Cj", "Cj",
                 "centralStreet");
-        location1.setId(1);
         locationRepository.save(location1);
         Location location2 = new Location("Altex", "Ro", "Tm", "Tm",
                 "central");
-        location2.setId(2);
         locationRepository.save(location2);
         Location location3 = new Location("Flanco", "Ro", "Or", "Bh",
                 "central");
-        location3.setId(3);
         locationRepository.save(location3);
         Customer customer = new Customer("Alex", "Doe",
                 "adoe", "pass", "adoe@gmail.com");

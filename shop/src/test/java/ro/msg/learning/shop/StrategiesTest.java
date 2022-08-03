@@ -70,8 +70,6 @@ public class StrategiesTest {
     @Test
     void testCreateOrder() {
         Order orderToTest = orderService.createOrder(orderDto);
-        System.out.println(orderToTest.getCustomer().getFirstName());
-        System.out.println(orderToTest.getCity());
         assertThat(orderToTest.getCreatedAt()).isToday();
         assertThat(orderToTest.getCustomer().getFirstName()).isEqualTo("Alex");
         assertThat(orderToTest.getCity()).isEqualTo("Cluj Napoca");
