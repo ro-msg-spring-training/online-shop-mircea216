@@ -13,18 +13,24 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.util.NestedServletException;
 import ro.msg.learning.shop.dto.CustomerDto;
 import ro.msg.learning.shop.dto.OrderDto;
 import ro.msg.learning.shop.dto.StockDto;
 import ro.msg.learning.shop.model.Customer;
+import ro.msg.learning.shop.model.Location;
+import ro.msg.learning.shop.model.Product;
 import ro.msg.learning.shop.repository.CustomerRepository;
+import ro.msg.learning.shop.repository.LocationRepository;
+import ro.msg.learning.shop.repository.ProductRepository;
+import ro.msg.learning.shop.repository.StockRepository;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -40,6 +46,12 @@ public class MostAbundantStrategyIntegratedTest {
     private MockMvc mockMvc;
     @Autowired
     private CustomerRepository customerRepository;
+    @Autowired
+    private LocationRepository locationRepository;
+    @Autowired
+    private ProductRepository productRepository;
+    @Autowired
+    private StockRepository stockRepository;
     private OrderDto orderDto;
     private Customer customer;
     private OrderDto orderDtoFailure;
@@ -51,16 +63,30 @@ public class MostAbundantStrategyIntegratedTest {
         customerOptional.ifPresent(value -> customer = value);
         CustomerDto customerDto = new CustomerDto(customer.getId(), customer.getFirstName(), customer.getLastName(),
                 customer.getUsername(), customer.getEmailAddress());
-        StockDto stockDto = new StockDto(1, 3);
+        Optional<Product> product = productRepository.findAll()
+                .stream()
+                .findFirst();
+        Integer productId = 0;
+        if (product.isPresent())
+            productId = product.get().getId();
+        StockDto stockDto = new StockDto(productId, 3);
         List<StockDto> orderedProducts = new ArrayList<>();
         orderedProducts.add(stockDto);
-        orderDto = new OrderDto(LocalDate.now(), 1, "emag", "ro", "cj",
-                "cj", "central", customerDto, orderedProducts);
+        Integer locationId = 0;
+        Optional<Location> location = locationRepository.findAll()
+                .stream()
+                .findFirst();
+        if (location.isPresent())
+            locationId = location.get().getId();
+        orderDto = new OrderDto(LocalDate.now(), locationId, location.get().getName(),
+                location.get().getCountry(), location.get().getCity(),
+                location.get().getCounty(), location.get().getStreetAddress(), customerDto, orderedProducts);
         List<StockDto> orderedProductsFailure = new ArrayList<>();
-        StockDto stockDtoFailure = new StockDto(2, 300);
+        StockDto stockDtoFailure = new StockDto(productId, 300);
         orderedProductsFailure.add(stockDtoFailure);
-        orderDtoFailure = new OrderDto(LocalDate.now(), 1, "emag", "ro", "cj",
-                "cj", "central", customerDto, orderedProductsFailure);
+        orderDtoFailure = new OrderDto(LocalDate.now(), locationId, location.get().getName(),
+                location.get().getCountry(), location.get().getCity(),
+                location.get().getCounty(), location.get().getStreetAddress(), customerDto, orderedProductsFailure);
     }
 
     @After
@@ -75,10 +101,17 @@ public class MostAbundantStrategyIntegratedTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is2xxSuccessful());
+        assertThat(stockRepository.findAll()
+                .stream()
+                .filter(stock -> stock.getId().equals(2))
+                .collect(Collectors.toList())
+                .get(0)
+                .getQuantity())
+                .isEqualTo(17);
     }
 
     @Test
-    public void testCreateOrderFailure() throws NestedServletException, Exception {
+    public void testCreateOrderFailure() throws Exception {
         mockMvc.perform(post("/orders").content(jsonStringify(orderDtoFailure))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
