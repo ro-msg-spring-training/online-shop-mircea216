@@ -1,5 +1,6 @@
 package ro.msg.learning.shop.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ro.msg.learning.shop.model.Product;
 import ro.msg.learning.shop.model.ProductCategory;
@@ -14,8 +15,8 @@ import ro.msg.learning.shop.service.exception.SupplierException;
 
 import java.util.List;
 
-
 @Service
+@RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
     private static final String PRODUCT_EXCEPTION = "No product with this id";
     private static final String CATEGORY_EXCEPTION = "No category with this ID";
@@ -24,13 +25,6 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final ProductCategoryRepository productCategoryRepository;
     private final SupplierRepository supplierRepository;
-
-    public ProductServiceImpl(ProductRepository productRepository, ProductCategoryRepository productCategoryRepository,
-                              SupplierRepository supplierRepository) {
-        this.productRepository = productRepository;
-        this.productCategoryRepository = productCategoryRepository;
-        this.supplierRepository = supplierRepository;
-    }
 
     @Override
     public List<Product> findAllProducts() {

@@ -1,6 +1,7 @@
 package ro.msg.learning.shop.model;
 
 import lombok.*;
+import ro.msg.learning.shop.dto.OrderDto;
 
 import javax.persistence.*;
 import java.util.List;
@@ -31,5 +32,14 @@ public class Location extends MainEntity<Integer> {
         this.city = city;
         this.county = county;
         this.streetAddress = streetAddress;
+    }
+
+    public Location(OrderDto orderDto) {
+        this.name = orderDto.getName();
+        this.id = orderDto.getLocationId();
+        this.country = orderDto.getCountry();
+        this.city = orderDto.getCity();
+        this.county = orderDto.getCounty();
+        this.streetAddress = orderDto.getStreetAddress();
     }
 }

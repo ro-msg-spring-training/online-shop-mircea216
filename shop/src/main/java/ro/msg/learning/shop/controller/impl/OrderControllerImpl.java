@@ -1,5 +1,6 @@
 package ro.msg.learning.shop.controller.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,12 +14,9 @@ import ro.msg.learning.shop.service.OrderService;
 
 @RestController
 @RequestMapping("/orders")
+@RequiredArgsConstructor
 public class OrderControllerImpl implements OrderController {
     private final OrderService orderService;
-
-    public OrderControllerImpl(OrderService orderService) {
-        this.orderService = orderService;
-    }
 
     @PostMapping
     @Override

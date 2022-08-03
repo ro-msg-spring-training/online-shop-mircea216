@@ -13,7 +13,6 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @Getter
 @Setter
-
 @EqualsAndHashCode(callSuper = true)
 public class OrderDetail extends MainEntity<Integer> {
     @ManyToOne

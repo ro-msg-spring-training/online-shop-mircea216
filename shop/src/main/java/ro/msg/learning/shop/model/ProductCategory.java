@@ -6,14 +6,12 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.util.List;
 
-
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
-
 public class ProductCategory extends MainEntity<Integer> {
     private String name;
     private String description;

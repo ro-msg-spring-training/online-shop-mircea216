@@ -1,6 +1,7 @@
 package ro.msg.learning.shop.model;
 
 import lombok.*;
+import ro.msg.learning.shop.dto.OrderDto;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -36,5 +37,13 @@ public class Customer extends MainEntity<Integer> {
         this.lastName = lastName;
         this.username = username;
         this.emailAddress = emailAddress;
+    }
+
+    public Customer(OrderDto orderDto) {
+        this.id = orderDto.getCustomer().getId();
+        this.firstName = orderDto.getCustomer().getFirstName();
+        this.lastName = orderDto.getCustomer().getLastName();
+        this.emailAddress = orderDto.getCustomer().getEmailAddress();
+        this.username = orderDto.getCustomer().getUsername();
     }
 }

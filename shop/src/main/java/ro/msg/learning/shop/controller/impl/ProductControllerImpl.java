@@ -1,5 +1,6 @@
 package ro.msg.learning.shop.controller.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,22 +10,18 @@ import ro.msg.learning.shop.dto.ProductToSaveDto;
 import ro.msg.learning.shop.service.ProductService;
 import ro.msg.learning.shop.utils.mapper.ProductMapper;
 
-
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/products")
+@RequiredArgsConstructor
 public class ProductControllerImpl implements ProductController {
     private static final String ID = "id";
     private static final String CREATE_SUCCESS = "Product successfully created";
     private static final String DELETE_SUCCESS = "Product successfully deleted";
     private static final String UPDATE_SUCCESS = "Product successfully updated";
     private final ProductService productService;
-
-    public ProductControllerImpl(ProductService productService) {
-        this.productService = productService;
-    }
 
     @GetMapping
     @Override

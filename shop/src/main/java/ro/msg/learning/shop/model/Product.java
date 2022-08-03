@@ -1,14 +1,13 @@
 package ro.msg.learning.shop.model;
 
-
 import lombok.*;
+import ro.msg.learning.shop.dto.ProductToSaveDto;
 
 import javax.persistence.*;
 import java.math.BigInteger;
 import java.util.List;
 
 @Entity
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -27,7 +26,6 @@ public class Product extends MainEntity<Integer> {
     @JoinColumn(name = "category")
     private ProductCategory productCategory;
     private String imageUrl;
-
     @OneToMany(mappedBy = "productOrder")
     private List<OrderDetail> orders;
     @OneToMany(mappedBy = "productStock")
@@ -42,5 +40,15 @@ public class Product extends MainEntity<Integer> {
         this.supplier = supplier;
         this.productCategory = productCategory;
         this.imageUrl = imageUrl;
+    }
+
+    public Product(ProductToSaveDto productDto, ProductCategory category, Supplier supplier) {
+        this.name = productDto.getName();
+        this.description = productDto.getDescription();
+        this.price = productDto.getPrice();
+        this.weight = productDto.getWeight();
+        this.productCategory = category;
+        this.supplier = supplier;
+        this.imageUrl = productDto.getImageUrl();
     }
 }

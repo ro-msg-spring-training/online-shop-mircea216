@@ -13,7 +13,6 @@ import java.util.List;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
-
 public class Supplier extends MainEntity<Integer> {
     private String name;
 

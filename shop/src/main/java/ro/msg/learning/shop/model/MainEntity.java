@@ -1,16 +1,13 @@
 package ro.msg.learning.shop.model;
 
-
 import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
-
 @MappedSuperclass
 @Getter
 @Setter
-
 @RequiredArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode

@@ -1,5 +1,6 @@
 package ro.msg.learning.shop.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ro.msg.learning.shop.dto.OrderDto;
 import ro.msg.learning.shop.dto.StockDto;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final StockRepository stockRepository;
@@ -25,17 +27,6 @@ public class OrderServiceImpl implements OrderService {
     private final ProductRepository productRepository;
     private final OrderStrategy orderStrategy;
 
-    public OrderServiceImpl(OrderRepository orderRepository, StockRepository stockRepository,
-                            OrderDetailRepository orderDetailRepository, ProductRepository productRepository,
-                            OrderStrategy orderStrategy) {
-        this.orderRepository = orderRepository;
-        this.stockRepository = stockRepository;
-        this.orderDetailRepository = orderDetailRepository;
-        this.productRepository = productRepository;
-        this.orderStrategy = orderStrategy;
-    }
-
-    //TODO remove dto-related logic from service
     @Override
     public Order createOrder(OrderDto orderDto) {
         Order order = OrderMapper.DtoToOrder(orderDto);

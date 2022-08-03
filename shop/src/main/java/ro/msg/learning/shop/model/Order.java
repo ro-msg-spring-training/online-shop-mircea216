@@ -1,6 +1,7 @@
 package ro.msg.learning.shop.model;
 
 import lombok.*;
+import ro.msg.learning.shop.dto.OrderDto;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -38,5 +39,25 @@ public class Order extends MainEntity<Integer> {
         this.city = city;
         this.county = county;
         this.streetAddress = streetAddress;
+    }
+
+    public Order(Location location, Customer customer, OrderDto orderDto) {
+        this.location = location;
+        this.customer = customer;
+        this.createdAt = orderDto.getCreatedAt();
+        this.country = orderDto.getCountry();
+        this.city = orderDto.getCity();
+        this.county = orderDto.getCounty();
+        this.streetAddress = orderDto.getStreetAddress();
+    }
+
+    public Order(OrderDto orderDto, Location location, Customer customer) {
+        this.createdAt = orderDto.getCreatedAt();
+        this.location = location;
+        this.customer = customer;
+        this.country = location.getCountry();
+        this.city = location.getCity();
+        this.county = location.getCounty();
+        this.streetAddress = location.getStreetAddress();
     }
 }
