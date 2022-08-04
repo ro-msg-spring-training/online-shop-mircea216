@@ -11,6 +11,7 @@ import ro.msg.learning.shop.repository.OrderDetailRepository;
 import ro.msg.learning.shop.repository.OrderRepository;
 import ro.msg.learning.shop.repository.ProductRepository;
 import ro.msg.learning.shop.repository.StockRepository;
+import ro.msg.learning.shop.service.EmailService;
 import ro.msg.learning.shop.service.OrderService;
 import ro.msg.learning.shop.service.strategy.OrderStrategy;
 import ro.msg.learning.shop.utils.mapper.OrderMapper;
@@ -26,6 +27,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderDetailRepository orderDetailRepository;
     private final ProductRepository productRepository;
     private final OrderStrategy orderStrategy;
+    private final EmailService emailService;
 
     @Override
     public Order createOrder(OrderDto orderDto) {
@@ -36,6 +38,7 @@ public class OrderServiceImpl implements OrderService {
         shipProductsFromStocks(orderDetails, stocks);
         orderRepository.save(order);
         orderDetails.forEach(orderDetailRepository::save);
+        emailService.sendEmailOfConfirmation(orderDto.getCustomer().getEmailAddress());
         return order;
     }
 
