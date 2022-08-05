@@ -49,6 +49,20 @@ public class SecurityChoiceConfiguration extends WebSecurityConfigurerAdapter {
         }
     }
 
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth
+                .inMemoryAuthentication()
+                .withUser(USER)
+                .password(passwordEncoder().encode(PASSWORD))
+                .authorities(ROLE_ADMIN);
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
     private void generateCsrfToken(HttpSecurity http) throws Exception {
         http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
     }
@@ -84,17 +98,4 @@ public class SecurityChoiceConfiguration extends WebSecurityConfigurerAdapter {
         generateCsrfToken(http);
     }
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-                .inMemoryAuthentication()
-                .withUser(USER)
-                .password(passwordEncoder().encode(PASSWORD))
-                .authorities(ROLE_ADMIN);
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 }

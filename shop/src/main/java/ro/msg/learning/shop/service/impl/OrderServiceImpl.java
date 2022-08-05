@@ -38,7 +38,7 @@ public class OrderServiceImpl implements OrderService {
         shipProductsFromStocks(orderDetails, stocks);
         orderRepository.save(order);
         orderDetails.forEach(orderDetailRepository::save);
-        emailService.sendEmailOfConfirmation(orderDto.getCustomer().getEmailAddress());
+        emailService.sendEmailOfConfirmation(order);
         return order;
     }
 
